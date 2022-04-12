@@ -50,7 +50,7 @@ function setLight() {
 function loadGLTF() {
   let balloonLoader = new THREE.GLTFLoader();
 
-  balloonLoader.load("./models/dummyglobe.gltf", (gltf) => {
+  balloonLoader.load("./models/earthtest.gltf", (gltf) => {
     Mesh = gltf.scene;
     //Mesh.scale.set(0.2,0.2,0.2);
     scene.add(Mesh);
