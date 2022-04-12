@@ -6,14 +6,23 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer(
+  {
+    antialias: true
+  }
+);
+
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 // create a sphere
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(5, 50, 30),
-  new THREE.MeshBasicMaterial({ color: 0xff0000 })
+  new THREE.MeshBasicMaterial({
+    // color: 0xff0000
+    map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
+  })
 );
 
 scene.add(sphere);
