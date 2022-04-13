@@ -1,0 +1,26 @@
+{
+  "name": "globe",
+  "version": "1.0.0",
+  "description": "computer graphics term project",
+  "main": "globe.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aganovia/globe.git"
+  },
+  "author": "Amela Aganovic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aganovia/globe/issues"
+  },
+  "homepage": "https://github.com/aganovia/globe#readme",
+  "dependencies": {
+    "http-server": "^14.1.0",
+    "three": "^0.139.2"
+  },
+  "devDependencies": {
+    "vite-plugin-string": "^1.1.2"
+  }
+}

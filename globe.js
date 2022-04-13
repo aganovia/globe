@@ -21,8 +21,12 @@ const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(5, 50, 30),
   new THREE.MeshBasicMaterial({
     // color: 0xff0000
-    map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
+    map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg")
   })
+  // new THREE.ShaderMaterial({
+  //   vertexShader: ,
+  //   fragmentShader:
+  // })
 );
 
 scene.add(sphere);
