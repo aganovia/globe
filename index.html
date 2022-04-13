@@ -5,12 +5,36 @@
     <style>
         body { margin: 0; }
     </style>
+
+<!-- Define our shaders -->
+<script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec4 vPosition;
+    uniform float x;
+    uniform float y;
+    
+    void main() {
+      gl_Position.x += x + vPosition.x;
+      gl_Position.y += y + vPosition.y;
+      gl_Position.z = 0.0;
+      gl_Position.w = 1.0;
+    }
+    </script>
+    <script id="fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+    
+    void main() {
+        gl_Position = vec4(1, 0, 0, 1);
+    }
+    </script>
+    
+    <script src="../Common/webgl-utils.js"></script>
+    <script src="../Common/initShaders.js"></script>
 </head>
 <body>
 <!-- Three.js library -->
 <script src="https://threejs.org/build/three.min.js"></script>
-<!-- GLTFLoader.js source -->
-<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
-<script type="text/javascript" src="globe.js"></script>
+<script src="scripts/SpinControls.js"></script>
+<script src="scripts/CameraSpinControls.js"></script>
+<script type="text/javascript" src="scripts/globe.js"></script>
 </body>
 </html>
