@@ -6,11 +6,9 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-const renderer = new THREE.WebGLRenderer(
-  {
-    antialias: true
-  }
-);
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+});
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -23,7 +21,7 @@ const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(radius, 50, 30),
   new THREE.MeshBasicMaterial({
     // color: 0xff0000
-    map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg")
+    map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
   })
   // new THREE.ShaderMaterial({
   //   vertexShader: ,
@@ -37,17 +35,20 @@ sphere.position.y = 0;
 sphere.position.z = -15;
 
 var spinControl = new SpinControls(sphere, radius, camera, renderer.domElement);
-spinControl.update();
 
 var cameraSpinControl = new CameraSpinControls(camera, renderer.domElement);
 
 // account for browser window resizing
-// window.addEventListener("resize", onWindowResize, false);
+window.addEventListener("resize", onWindowResize, false);
 cameraSpinControl.onWindowResize();
 
 function animate() {
   requestAnimationFrame(animate);
+
+  // sphere.rotation.y -= 0.005;
+
   renderer.render(scene, camera);
+  spinControl.update();
 }
 
 animate();
