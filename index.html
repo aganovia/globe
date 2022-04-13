@@ -5,70 +5,36 @@
     <style>
         body { margin: 0; }
     </style>
+
+<!-- Define our shaders -->
+<script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec4 vPosition;
+    uniform float x;
+    uniform float y;
+    
+    void main() {
+      gl_Position.x += x + vPosition.x;
+      gl_Position.y += y + vPosition.y;
+      gl_Position.z = 0.0;
+      gl_Position.w = 1.0;
+    }
+    </script>
+    <script id="fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+    
+    void main() {
+        gl_Position = vec4(1, 0, 0, 1);
+    }
+    </script>
+    
+    <script src="../Common/webgl-utils.js"></script>
+    <script src="../Common/initShaders.js"></script>
 </head>
 <body>
 <!-- Three.js library -->
 <script src="https://threejs.org/build/three.min.js"></script>
-<!-- GLTFLoader.js source -->
-<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
-<script>
-    const renderer = new THREE.WebGLRenderer();
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
-    const scene = new THREE.Scene();
-    let Mesh;
-    let light;
-
-    // initialize scene
-    function init() {
-        scene.background = new THREE.Color('black');
-        camera.position.set(0, 10, 20);
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-    }
-
-    // set lighting
-    function setLight() {
-        light = new THREE.AmbientLight(0xffffff); // soft white light
-        scene.add(light);
-    }
-
-    // load Blender model
-    function loadGLTF() {
-        let balloonLoader = new THREE.GLTFLoader();
-
-        balloonLoader.load('./models/dummyglobe.gltf', (gltf) => {
-            Mesh = gltf.scene;
-            //Mesh.scale.set(0.2,0.2,0.2);
-            scene.add(Mesh);
-            Mesh.position.x = 0;
-            Mesh.position.y = 10;
-            Mesh.position.z = 15;
-        });
-    }
-
-    // animate the model
-    function animate() {
-        requestAnimationFrame(animate);
-        if (Mesh && Mesh.rotation) {
-            Mesh.rotation.y -= 0.005;
-        }
-        renderer.render(scene, camera);
-    }
-
-    function onWindowResize(){
-        
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize( window.innerWidth, window.innerHeight );
-    }
-
-    // account for browser window resizing
-    window.addEventListener( 'resize', onWindowResize, false );
-
-    init();
-    setLight();
-    loadGLTF();
-    animate();
-</script>
+<script src="scripts/SpinControls.js"></script>
+<script src="scripts/CameraSpinControls.js"></script>
+<script type="text/javascript" src="scripts/globe.js"></script>
 </body>
 </html>
