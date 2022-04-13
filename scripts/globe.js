@@ -17,8 +17,10 @@ renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 // create a sphere
+var radius = 5;
+
 const sphere = new THREE.Mesh(
-  new THREE.SphereGeometry(5, 50, 30),
+  new THREE.SphereGeometry(radius, 50, 30),
   new THREE.MeshBasicMaterial({
     // color: 0xff0000
     map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg")
@@ -34,8 +36,14 @@ sphere.position.x = 0;
 sphere.position.y = 0;
 sphere.position.z = -15;
 
+var spinControl = new SpinControls(sphere, radius, camera, renderer.domElement);
+spinControl.update();
+
+var cameraSpinControl = new CameraSpinControls(camera, renderer.domElement);
+
 // account for browser window resizing
-window.addEventListener("resize", onWindowResize, false);
+// window.addEventListener("resize", onWindowResize, false);
+cameraSpinControl.onWindowResize();
 
 function animate() {
   requestAnimationFrame(animate);
