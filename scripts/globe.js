@@ -10,10 +10,6 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
 });
 
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-document.body.appendChild(renderer.domElement);
-
 // colors for lighting
 var colors = {
   red: 0xFF0000,
@@ -27,6 +23,14 @@ var colors = {
   purple: 0x7F00FF,
   water: 0x1E5772
 };
+
+// default light values
+var pointLightIntensity, pointLightColor, pointLight;
+var ambientLight, ambientLightColor;
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+document.body.appendChild(renderer.domElement);
 
 // create a sphere
 var radius = 5;
@@ -65,22 +69,28 @@ window.addEventListener("resize", onWindowResize, false);
 cameraSpinControl.onWindowResize();
 
 // set lighting
-function setLight() {
-  ambientLight = new THREE.AmbientLight(colors.white); // soft white light
+function initLight() {
+  ambientLightColor = colors.white;
+  ambientLight = new THREE.AmbientLight(ambientLightColor); // soft white light
   scene.add(ambientLight);
 
-  var lightIntensity = 0.4;
-  var lightColor = colors.purple;
-  var pointLight = new THREE.PointLight(lightColor, lightIntensity);
-  pointLight.position.set(0, 10, 70); // centered
+  pointLightIntensity = 0.4;
+  pointLightColor = colors.white;
+  pointLight = new THREE.PointLight(pointLightColor, pointLightIntensity, 1000, 2);
+  pointLight.position.set(0, 10, 80); // centered
   // pointLight.position.set(0, 14, 10); // kinda top lit
-  pointLight.decay = 2;
   scene.add(pointLight);
 
   // TODO delete later
   const sphereSize = 1;
   const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
   scene.add(pointLightHelper);
+}
+
+function setLight(color){
+  // pointLight.color.setHex(color);
+  ambientLight.color.setHex(color);
+  // renderer.render(scene, camera);
 }
 
 function animate() {
@@ -101,5 +111,25 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-setLight();
+var buttons = document.getElementsByTagName("button");
+for (let i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener("click", onButtonClick, false);
+};
+
+function onButtonClick(event) {
+  // alert(event.target.id);
+  console.log(event.target.id);
+
+  if (event.target.id == "red") {
+    setLight(colors.red);
+  } else if (event.target.id == "cyan") {
+    setLight(colors.cyan);
+  } else if (event.target.id == "default") {
+    setLight(colors.white);
+  } else if (event.target.id == "yellow") {
+    setLight(colors.yellow);
+  }
+}
+
+initLight();
 animate();
