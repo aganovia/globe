@@ -1,3 +1,7 @@
+import vertexShader from './shaders/vertex.glsl'
+
+console.log(vertexShader);
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   50,
@@ -37,15 +41,16 @@ var radius = 5;
 
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(radius, 50, 30),
-  new THREE.MeshPhongMaterial({
-    // color: colors.water,
-    map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
-    shininess: 100
-  })
-  // new THREE.ShaderMaterial({
-  //   vertexShader: ,
-  //   fragmentShader:
+
+  // new THREE.MeshPhongMaterial({
+  //   // color: colors.water,
+  //   map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
+  //   shininess: 100
   // })
+
+  new THREE.ShaderMaterial({
+    // vertexShader: 
+  })
 );
 
 // add sphere and adjust camera & sphere positions
@@ -67,9 +72,11 @@ renderer.shadowMap.enabled = true;
 sphere.receiveShadow = true;
 sphere.castShadow = true;
 
-var cameraPivot = new THREE.Object3D();
-sphere.add(cameraPivot);
-cameraPivot.add(camera);
+// Camera pivot (only works if no spin controls)
+// var cameraPivot = new THREE.Object3D();
+// sphere.add(cameraPivot);
+// cameraPivot.add(camera);
+// camera.position.set(0, 0, 20);
 
 // account for browser window resizing
 window.addEventListener("resize", onWindowResize, false);
@@ -104,7 +111,7 @@ function animate() {
   requestAnimationFrame(animate);
 
   // sphere.rotation.y -= 0.005;
-  cameraPivot.rotation.y += 0.001;
+  // cameraPivot.rotation.y += 0.001;
   // orbitControl.update();
   renderer.render(scene, camera);
   spinControl.update();
