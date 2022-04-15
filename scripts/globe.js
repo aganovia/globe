@@ -50,7 +50,6 @@ const sphere = new THREE.Mesh(
 
 // add sphere and adjust camera & sphere positions
 scene.add(sphere);
-camera.position.set(0, 10, 20);
 sphere.position.x = 0;
 sphere.position.y = 10;
 sphere.position.z = 5;
@@ -59,10 +58,18 @@ sphere.position.z = 5;
 var spinControl = new SpinControls(sphere, radius, camera, renderer.domElement);
 var cameraSpinControl = new CameraSpinControls(camera, renderer.domElement);
 
+// const orbitControl = new THREE.OrbitControls(camera, renderer.domElement);
+camera.position.set(0, 10, 20);
+// orbitControl.update();
+
 // lighting and shadows
 renderer.shadowMap.enabled = true;
 sphere.receiveShadow = true;
 sphere.castShadow = true;
+
+var cameraPivot = new THREE.Object3D();
+sphere.add(cameraPivot);
+cameraPivot.add(camera);
 
 // account for browser window resizing
 window.addEventListener("resize", onWindowResize, false);
@@ -97,7 +104,8 @@ function animate() {
   requestAnimationFrame(animate);
 
   // sphere.rotation.y -= 0.005;
-
+  cameraPivot.rotation.y += 0.001;
+  // orbitControl.update();
   renderer.render(scene, camera);
   spinControl.update();
 }
