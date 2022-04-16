@@ -1,6 +1,5 @@
-import vertexShader from './shaders/vertex.glsl'
-
-console.log(vertexShader);
+import vertex from './shaders/vertex.js'
+import fragment from './shaders/fragment.js'
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -49,7 +48,13 @@ const sphere = new THREE.Mesh(
   // })
 
   new THREE.ShaderMaterial({
-    // vertexShader: 
+    vertexShader: vertex,
+    fragmentShader: fragment,
+    uniforms: {
+      globeTexture: {
+        value: new THREE.TextureLoader().load('./textures/8081_earthmap10k.jpg')
+      }
+    }
   })
 );
 
