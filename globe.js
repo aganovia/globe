@@ -41,21 +41,21 @@ var radius = 5;
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(radius, 50, 30),
 
-  // new THREE.MeshPhongMaterial({
-  //   // color: colors.water,
-  //   map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
-  //   shininess: 100
-  // })
-
-  new THREE.ShaderMaterial({
-    vertexShader: vertex,
-    fragmentShader: fragment,
-    uniforms: {
-      globeTexture: {
-        value: new THREE.TextureLoader().load('./textures/8081_earthmap10k.jpg')
-      }
-    }
+  new THREE.MeshPhongMaterial({
+    // color: colors.water,
+    map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
+    shininess: 100
   })
+
+  // new THREE.ShaderMaterial({
+  //   vertexShader: vertex,
+  //   fragmentShader: fragment,
+  //   uniforms: {
+  //     globeTexture: {
+  //       value: new THREE.TextureLoader().load('./textures/8081_earthmap10k.jpg')
+  //     }
+  //   }
+  // })
 );
 
 // add sphere and adjust camera & sphere positions
@@ -123,9 +123,6 @@ function animate() {
 }
 
 function onWindowResize() {
-  windowHalfX = window.innerWidth / 2;
-  windowHalfY = window.innerHeight / 2;
-
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
