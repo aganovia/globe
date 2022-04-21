@@ -2,39 +2,28 @@
 <html>
 <head>
     <title>Term Project</title>
-    <style>
+    <!-- <style>
         body { margin: 0; }
-    </style>
+    </style> -->
+    <link rel="stylesheet" href="./styles.css?v=1.0">
 
-<!-- Define our shaders -->
-<script id="vertex-shader" type="x-shader/x-vertex">
-    attribute vec4 vPosition;
-    uniform float x;
-    uniform float y;
-    
-    void main() {
-      gl_Position.x += x + vPosition.x;
-      gl_Position.y += y + vPosition.y;
-      gl_Position.z = 0.0;
-      gl_Position.w = 1.0;
-    }
-    </script>
-    <script id="fragment-shader" type="x-shader/x-fragment">
-    precision mediump float;
-    
-    void main() {
-        gl_Position = vec4(1, 0, 0, 1);
-    }
-    </script>
-    
-    <script src="../Common/webgl-utils.js"></script>
-    <script src="../Common/initShaders.js"></script>
+    <script src="./scripts/webgl-utils.js"></script>
+    <script src="./scripts/initShaders.js"></script>
 </head>
 <body>
 <!-- Three.js library -->
 <script src="https://threejs.org/build/three.min.js"></script>
+<!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/jsm/controls/OrbitControls.js"></script> -->
 <script src="scripts/SpinControls.js"></script>
+<script src="./js/controls/OrbitControls.js"></script>
 <script src="scripts/CameraSpinControls.js"></script>
-<script type="text/javascript" src="scripts/globe.js"></script>
+
+<!-- real stuff starts here -->
+<div style="width:100%;height:50px;text-align: center; color:white;" class="ui">CIS 367 Term Project</div>
+<button style="top:0" id="red" class="ui">Red</button>
+<button style="bottom:0" id="default" class="ui">Default</button>
+<button style="right:0" id="cyan" class="ui">Cyan</button>
+<button style="right:0; bottom:0;" id="yellow" class="ui">Yellow</button>
+<script type="module" content="application/javascript" src="globe.js"></script>
 </body>
 </html>
