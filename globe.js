@@ -35,7 +35,28 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
-// create a sphere
+// add "stars" (particles) to background 
+const pointsMaterial = new THREE.PointsMaterial({
+  size: 0.005
+})
+
+const particlesGeometry = new THREE.BufferGeometry;
+const particlesCnt = 5000;
+const posArray = new Float32Array(particlesCnt * 3);
+
+for (let i = 0; i < particlesCnt * 3; i++) {
+  // posArray[i] = Math.random();
+  posArray[i] = (Math.random() - 0.5) * 40;
+}
+
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+const particlesMesh = new THREE.Points(particlesGeometry, pointsMaterial);
+scene.add(particlesMesh)
+particlesMesh.position.x = 0;
+particlesMesh.position.y = 10;
+particlesMesh.position.z = 0;
+
+// create a sphere (Earth)
 var radius = 5;
 
 const sphere = new THREE.Mesh(
