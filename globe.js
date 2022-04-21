@@ -31,21 +31,23 @@ var colors = {
 var pointLightIntensity, pointLightColor, pointLight;
 var ambientLight, ambientLightColor;
 
+// clock used for moon
+const clock = new THREE.Clock();
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 // add "stars" (particles) to background 
 const pointsMaterial = new THREE.PointsMaterial({
-  size: 0.005
+  size: 0.015
 })
 
 const particlesGeometry = new THREE.BufferGeometry;
-const particlesCnt = 5000;
+const particlesCnt = 10000;
 const posArray = new Float32Array(particlesCnt * 3);
 
 for (let i = 0; i < particlesCnt * 3; i++) {
-  // posArray[i] = Math.random();
   posArray[i] = (Math.random() - 0.5) * 40;
 }
 
@@ -58,7 +60,6 @@ particlesMesh.position.z = 0;
 
 // create a sphere (Earth)
 var radius = 5;
-
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(radius, 50, 30),
 
@@ -73,6 +74,7 @@ const sphere = new THREE.Mesh(
     shininess: 100
   })
 
+  // if we wanted to use custom vertex / fragment shaders...
   // new THREE.ShaderMaterial({
   //   vertexShader: vertex,
   //   fragmentShader: fragment,
@@ -84,11 +86,26 @@ const sphere = new THREE.Mesh(
   // })
 );
 
-// add sphere and adjust camera & sphere positions
+// create moon
+const moon = new THREE.Mesh(
+  new THREE.SphereGeometry(radius, 50, 30),
+  new THREE.MeshPhongMaterial({
+    // color: colors.water,
+    color: colors.orange,
+    emissive: colors.water,
+    emissiveIntensity: 0.25,
+    reflectivity: 1,
+    shininess: 100
+  })
+);
+
+// add & position objects
 scene.add(sphere);
-sphere.position.x = 0;
-sphere.position.y = 10;
-sphere.position.z = 5;
+sphere.position.set(0, 10, 5);
+
+scene.add(moon);
+moon.scale.set(0.2, 0.2, 0.2);
+moon.position.set(-10, 10, 5);
 
 // spin controls
 var spinControl = new SpinControls(sphere, radius, camera, renderer.domElement);
@@ -102,12 +119,6 @@ camera.position.set(0, 10, 20);
 renderer.shadowMap.enabled = true;
 sphere.receiveShadow = true;
 sphere.castShadow = true;
-
-// Camera pivot (only works if no spin controls)
-// var cameraPivot = new THREE.Object3D();
-// sphere.add(cameraPivot);
-// cameraPivot.add(camera);
-// camera.position.set(0, 0, 20);
 
 // account for browser window resizing
 window.addEventListener("resize", onWindowResize, false);
@@ -123,10 +134,9 @@ function initLight() {
   pointLightColor = colors.white;
   pointLight = new THREE.PointLight(pointLightColor, pointLightIntensity, 1000, 2);
   pointLight.position.set(0, 10, 80); // centered
-  // pointLight.position.set(0, 14, 10); // kinda top lit
   scene.add(pointLight);
 
-  // TODO delete later
+  // pointLightHelper to visualize where point light is located
   const sphereSize = 1;
   const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
   scene.add(pointLightHelper);
@@ -135,33 +145,51 @@ function initLight() {
 function setLight(color){
   // pointLight.color.setHex(color);
   ambientLight.color.setHex(color);
-  // renderer.render(scene, camera);
 }
 
 function animate() {
-  requestAnimationFrame(animate);
+  // moon orbit
+  var delta = clock.getDelta();
+  var elapsed = clock.elapsedTime;
+  
+  //sphere position
+  // sphere.position.x = Math.sin(elapsed/2) * 3;
+  // sphere.position.z = Math.cos(elapsed/2) * 3;
+  
+  moon
+  moon.position.x =  (sphere.position.x + Math.sin(elapsed*2) * 2) * 3;
+  moon.position.z = (sphere.position.z + Math.cos(elapsed*2) * 2) * 1.5;
+  moon.rotation.x += 0.4 * delta;
+  moon.rotation.y += 0.2 * delta;
 
+  moon.rotateY(0.004);
+
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+  spinControl.update();
+
+  // Other options I explored for rotations
   // sphere.rotation.y -= 0.005;
   // cameraPivot.rotation.y += 0.001;
   // orbitControl.update();
-  renderer.render(scene, camera);
-  spinControl.update();
 }
 
+// resize based on browser window
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+// buttons for different lighting colors
 var buttons = document.getElementsByTagName("button");
 for (let i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener("click", onButtonClick, false);
 };
 
+// button onClick for lighting color buttons
 function onButtonClick(event) {
-  // alert(event.target.id);
-  console.log(event.target.id);
+  console.log(event.target.id); // the button clicked
 
   if (event.target.id == "red") {
     setLight(colors.red);
