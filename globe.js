@@ -62,17 +62,42 @@ var blueShader = new THREE.ShaderMaterial({
 })
 
 // create a sphere
+// add "stars" (particles) to background 
+const pointsMaterial = new THREE.PointsMaterial({
+  size: 0.005
+})
+
+const particlesGeometry = new THREE.BufferGeometry;
+const particlesCnt = 5000;
+const posArray = new Float32Array(particlesCnt * 3);
+
+for (let i = 0; i < particlesCnt * 3; i++) {
+  // posArray[i] = Math.random();
+  posArray[i] = (Math.random() - 0.5) * 40;
+}
+
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+const particlesMesh = new THREE.Points(particlesGeometry, pointsMaterial);
+scene.add(particlesMesh)
+particlesMesh.position.x = 0;
+particlesMesh.position.y = 10;
+particlesMesh.position.z = 0;
+
+// create a sphere (Earth)
 var radius = 5;
 
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(radius, 50, 30),
-  defaultShader
-
-  // new THREE.MeshPhongMaterial({
-  //   // color: colors.water,
-  //   map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
-  //   shininess: 100
-  // })
+  new THREE.MeshPhongMaterial({
+    // color: colors.water,
+    map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
+    bumpMap: new THREE.TextureLoader().load("./textures/8081_earthmap10k_grayscale.jpg"),
+    bumpScale: 2,
+    emissive: colors.water,
+    emissiveIntensity: 0.25,
+    reflectivity: 1,
+    shininess: 100
+  })
 
   // new THREE.ShaderMaterial({
   //   vertexShader: vertex,
