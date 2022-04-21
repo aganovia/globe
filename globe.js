@@ -1,5 +1,10 @@
 import vertex from './shaders/vertex.js'
 import fragment from './shaders/fragment.js'
+// import fragmentRed from './shaders/fragmentRed.js'
+import fragmentBlue from './shaders/fragmentBlue.js'
+// import fragmentYellow from './shaders/fragmentYellow.js'
+import atmosphereVertex from './shaders/atmosphereVertex.js'
+import atmosphereFragment from './shaders/atmosphereFragment.js'
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -35,11 +40,33 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
+// create shader materials
+var defaultShader = new THREE.ShaderMaterial({
+  vertexShader: vertex,
+  fragmentShader: fragment,
+  uniforms: {
+    globeTexture: {
+      value: new THREE.TextureLoader().load('./textures/8081_earthmap10k.jpg')
+    }
+  }
+})
+
+var blueShader = new THREE.ShaderMaterial({
+  vertexShader: vertex,
+  fragmentShader: fragmentBlue,
+  uniforms: {
+    globeTexture: {
+      value: new THREE.TextureLoader().load('./textures/8081_earthmap10k.jpg')
+    }
+  }
+})
+
 // create a sphere
 var radius = 5;
 
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(radius, 50, 30),
+  defaultShader
 
   // new THREE.MeshPhongMaterial({
   //   // color: colors.water,
@@ -47,15 +74,15 @@ const sphere = new THREE.Mesh(
   //   shininess: 100
   // })
 
-  new THREE.ShaderMaterial({
-    vertexShader: vertex,
-    fragmentShader: fragment,
-    uniforms: {
-      globeTexture: {
-        value: new THREE.TextureLoader().load('./textures/8081_earthmap10k.jpg')
-      }
-    }
-  })
+  // new THREE.ShaderMaterial({
+  //   vertexShader: vertex,
+  //   fragmentShader: fragment,
+  //   uniforms: {
+  //     globeTexture: {
+  //       value: new THREE.TextureLoader().load('./textures/8081_earthmap10k.jpg')
+  //     }
+  //   }
+  // })
 );
 
 // add sphere and adjust camera & sphere positions
@@ -63,6 +90,22 @@ scene.add(sphere);
 sphere.position.x = 0;
 sphere.position.y = 10;
 sphere.position.z = 5;
+
+// create ATMOSPHERE
+const atmosphere = new THREE.Mesh(
+  new THREE.SphereGeometry(radius, 50, 30),
+  new THREE.ShaderMaterial({
+    vertexShader: atmosphereVertex,
+    fragmentShader: atmosphereFragment
+  })
+);
+
+// add sphere and adjust camera & sphere positions
+scene.add(atmosphere);
+atmosphere.position.x = 0;
+atmosphere.position.y = 10;
+atmosphere.position.z = 3;
+atmosphere.scale.set(1.1, 1.1, 1.1);
 
 // spin controls
 var spinControl = new SpinControls(sphere, radius, camera, renderer.domElement);
@@ -123,9 +166,6 @@ function animate() {
 }
 
 function onWindowResize() {
-  windowHalfX = window.innerWidth / 2;
-  windowHalfY = window.innerHeight / 2;
-
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -142,10 +182,11 @@ function onButtonClick(event) {
 
   if (event.target.id == "red") {
     setLight(colors.red);
+    
   } else if (event.target.id == "cyan") {
-    setLight(colors.cyan);
+    sphere.ShaderMaterial = blueShader;
   } else if (event.target.id == "default") {
-    setLight(colors.white);
+    sphere.ShaderMaterial = defaultShader;
   } else if (event.target.id == "yellow") {
     setLight(colors.yellow);
   }
