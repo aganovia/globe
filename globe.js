@@ -90,9 +90,10 @@ const sphere = new THREE.Mesh(
 const moon = new THREE.Mesh(
   new THREE.SphereGeometry(radius, 50, 30),
   new THREE.MeshPhongMaterial({
-    // color: colors.water,
-    color: colors.orange,
-    emissive: colors.water,
+    // color: colors.orange,
+    map: new THREE.TextureLoader().load("./textures/moonbump4k.jpg"),
+    bumpMap: new THREE.TextureLoader().load("./textures/moonmap4k.jpg"),
+    emissive: colors.white,
     emissiveIntensity: 0.25,
     reflectivity: 1,
     shininess: 100
@@ -104,7 +105,7 @@ scene.add(sphere);
 sphere.position.set(0, 10, 5);
 
 scene.add(moon);
-moon.scale.set(0.2, 0.2, 0.2);
+moon.scale.set(0.1, 0.1, 0.1);
 moon.position.set(-10, 10, 5);
 
 // spin controls
