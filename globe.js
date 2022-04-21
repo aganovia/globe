@@ -44,6 +44,11 @@ const sphere = new THREE.Mesh(
   new THREE.MeshPhongMaterial({
     // color: colors.water,
     map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
+    bumpMap: new THREE.TextureLoader().load("./textures/8081_earthmap10k_grayscale.jpg"),
+    bumpScale: 2,
+    emissive: colors.water,
+    emissiveIntensity: 0.25,
+    reflectivity: 1,
     shininess: 100
   })
 
