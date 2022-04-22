@@ -13,6 +13,10 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
 });
 
+// variables
+var pointLightIntensity, pointLightColor, pointLight;
+var ambientLight, ambientLightColor;
+
 // colors for lighting
 var colors = {
   red: 0xFF0000,
@@ -27,9 +31,40 @@ var colors = {
   water: 0x1E5772
 };
 
-// default light values
-var pointLightIntensity, pointLightColor, pointLight;
-var ambientLight, ambientLightColor;
+var currentPlanet = 0; // index value; earth by default
+var planets =  ["earth", "mars", "jupiter", "saturn", "uranus", "neptune", "mercury", "venus"]
+var planetMaterials = {
+  "earth": new THREE.MeshPhongMaterial({
+    map: new THREE.TextureLoader().load("./textures/8081_earthmap4k.jpg"),
+    bumpMap: new THREE.TextureLoader().load("./textures/8081_earthmap10k_grayscale.jpg"),
+    bumpScale: 2,
+    emissive: colors.water,
+    emissiveIntensity: 0.25,
+    reflectivity: 1,
+    shininess: 100
+  }),
+  "mars": new THREE.MeshPhongMaterial({
+    map: new THREE.TextureLoader().load("./textures/8k_mars.jpg"),
+  }),
+  "jupiter": new THREE.MeshPhongMaterial({
+    map: new THREE.TextureLoader().load("./textures/8k_jupiter.jpg"),
+  }),
+  "saturn": new THREE.MeshPhongMaterial({
+    map: new THREE.TextureLoader().load("./textures/8k_saturn.jpg"),
+  }),
+  "uranus": new THREE.MeshPhongMaterial({
+    map: new THREE.TextureLoader().load("./textures/2k_uranus.jpg"),
+  }),
+  "neptune": new THREE.MeshPhongMaterial({
+    map: new THREE.TextureLoader().load("./textures/2k_neptune.jpg"),
+  }),
+  "mercury": new THREE.MeshPhongMaterial({
+    map: new THREE.TextureLoader().load("./textures/8k_mercury.jpg"),
+  }),
+  "venus": new THREE.MeshPhongMaterial({
+    map: new THREE.TextureLoader().load("./textures/8k_venus_surface.jpg"),
+  })
+}
 
 // clock used for moon
 const clock = new THREE.Clock();
@@ -62,17 +97,7 @@ particlesMesh.position.z = 0;
 var radius = 5;
 const sphere = new THREE.Mesh(
   new THREE.SphereGeometry(radius, 50, 30),
-
-  new THREE.MeshPhongMaterial({
-    // color: colors.water,
-    map: new THREE.TextureLoader().load("./textures/8081_earthmap10k.jpg"),
-    bumpMap: new THREE.TextureLoader().load("./textures/8081_earthmap10k_grayscale.jpg"),
-    bumpScale: 2,
-    emissive: colors.water,
-    emissiveIntensity: 0.25,
-    reflectivity: 1,
-    shininess: 100
-  })
+  planetMaterials.earth
 
   // if we wanted to use custom vertex / fragment shaders...
   // new THREE.ShaderMaterial({
@@ -120,6 +145,8 @@ camera.position.set(0, 10, 20);
 renderer.shadowMap.enabled = true;
 sphere.receiveShadow = true;
 sphere.castShadow = true;
+moon.receiveShadow = true;
+moon.castShadow = true;
 
 // account for browser window resizing
 window.addEventListener("resize", onWindowResize, false);
@@ -157,9 +184,10 @@ function animate() {
   // sphere.position.x = Math.sin(elapsed/2) * 3;
   // sphere.position.z = Math.cos(elapsed/2) * 3;
   
-  moon
+  // moon
   moon.position.x =  (sphere.position.x + Math.sin(elapsed*2) * 2) * 3;
   moon.position.z = (sphere.position.z + Math.cos(elapsed*2) * 2) * 1.5;
+  moon.position.y = ((sphere.position.y + 0.5) + Math.sin(elapsed*2) * 2);
   moon.rotation.x += 0.4 * delta;
   moon.rotation.y += 0.2 * delta;
 
@@ -188,19 +216,64 @@ for (let i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener("click", onButtonClick, false);
 };
 
+window.addEventListener("keydown", onKeyDown, false);
+
 // button onClick for lighting color buttons
 function onButtonClick(event) {
   console.log(event.target.id); // the button clicked
 
   if (event.target.id == "red") {
     setLight(colors.red);
-  } else if (event.target.id == "cyan") {
-    setLight(colors.cyan);
+  } else if (event.target.id == "purple") {
+    setLight(colors.purple);
   } else if (event.target.id == "default") {
     setLight(colors.white);
   } else if (event.target.id == "yellow") {
     setLight(colors.yellow);
   }
+}
+
+// cycle through planets on key press
+// 65 = A, 68 = D
+function onKeyDown(event) {
+  // console.log(event.keyCode); // the key pressed
+  // console.log("Current planet index: " + currentPlanet);
+  // console.log("Current planet array: " + planets[currentPlanet]);
+  // console.log("Next planet left: " + (planets[currentPlanet - 1]));
+  // console.log("Next planet right: " + (planets[currentPlanet + 1]));
+
+  // special cases:
+
+  // if current == earth, left is venus
+  // if current == venus, right is earth
+
+  // if next is earth, set moon to visible
+  // if current is earth, set moon to invisible
+
+  if (event.keyCode == 65) { // cycle left
+    if (currentPlanet == 0) { // earth
+      moon.visible = false;
+      currentPlanet = 7; // venus
+    } else if (currentPlanet == 1) { // mars
+      moon.visible = true;
+      currentPlanet = 0; // earth
+    } else {
+      currentPlanet = currentPlanet - 1;
+    }
+    sphere.material = planetMaterials[planets[currentPlanet]];
+  } else if (event.keyCode == 68) { // cycle right
+    if (currentPlanet == 7) { // venus
+      currentPlanet = 0; // earth
+      moon.visible = true;
+    } else if (currentPlanet == 0) { // earth
+      moon.visible = false;
+      currentPlanet = 1;
+    } else {
+      currentPlanet = currentPlanet + 1;
+    }
+    sphere.material = planetMaterials[planets[currentPlanet]];
+  }
+  
 }
 
 initLight();

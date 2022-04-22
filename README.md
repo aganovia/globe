@@ -24,4 +24,5 @@ Otherwise, the app can also be found at [this link](https://cis.gvsu.edu/~aganov
 
 ## Credits
 
-todo
+Earth and moon textures: http://planetpixelemporium.com/earth8081.html 
+Planet textures: https://www.solarsystemscope.com/textures/
