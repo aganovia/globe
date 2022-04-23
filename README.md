@@ -3,7 +3,7 @@ Term project for CIS 367: Computer Graphics.
 
 ## Project Description
 
-todo
+An interactive solar system in Three.js. Clicking and dragging on the sphere will spin it in the direction the cursor is moving. Pressing the A and D keys on the keyboard cycles through different planets. The color of the lighting can be changed by clicking on the buttons on the screen.
 
 ## Graphics-based Technologies
 
@@ -26,3 +26,4 @@ Otherwise, the app can also be found at [this link](https://cis.gvsu.edu/~aganov
 
 Earth and moon textures: http://planetpixelemporium.com/earth8081.html 
 Planet textures: https://www.solarsystemscope.com/textures/
+Spin controls: https://github.com/PaulHax/spin-controls
