@@ -1,14 +1,23 @@
 body {
   overflow: hidden;
   margin: 0;
+  background-color: black;
 }
 
 .ui {
-  position: absolute;
+  /* position: absolute; */
+  background:black;
+  color: white;
+  margin: 0;
+  display: inline-block;
+  font-size: larger;
 }
 
 button {
-  margin: 20px;
-  size: 300px;
   font-size: larger;
+  color: white;
+  background: white;
+  background-color: white;
+  display: inline-block;
+  text-align: center;
 }
