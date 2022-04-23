@@ -1,6 +1,8 @@
 # Three.js Globe
 Term project for CIS 367: Computer Graphics.
 
+![globegif](https://user-images.githubusercontent.com/48222640/164942850-5171a42d-6922-437c-a0cd-30b1b5dfe762.gif)
+
 ## Project Description
 
 An interactive solar system in Three.js. Clicking and dragging on the sphere will spin it in the direction the cursor is moving. Pressing the A and D keys on the keyboard cycles through different planets. The color of the lighting can be changed by clicking on the buttons on the screen.
@@ -25,5 +27,7 @@ Otherwise, the app can also be found at [this link](https://cis.gvsu.edu/~aganov
 ## Credits
 
 Earth and moon textures: http://planetpixelemporium.com/earth8081.html 
+
 Planet textures: https://www.solarsystemscope.com/textures/
+
 Spin controls: https://github.com/PaulHax/spin-controls
