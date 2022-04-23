@@ -1,7 +1,7 @@
 # Three.js Globe
 Term project for CIS 367: Computer Graphics.
 
-![globegif](https://user-images.githubusercontent.com/48222640/164942850-5171a42d-6922-437c-a0cd-30b1b5dfe762.gif)
+![globegif](https://user-images.githubusercontent.com/48222640/164944549-7acb7a37-7c15-4159-973d-45275fcc8cb9.gif)
 
 ## Project Description
 
