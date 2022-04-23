@@ -30,4 +30,6 @@ Earth and moon textures: http://planetpixelemporium.com/earth8081.html
 
 Planet textures: https://www.solarsystemscope.com/textures/
 
+Mercury texture: https://solarsystem.nasa.gov/resources/531/enhanced-color-mercury-map/ 
+
 Spin controls: https://github.com/PaulHax/spin-controls

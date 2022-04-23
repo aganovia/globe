@@ -19,10 +19,6 @@
   "homepage": "https://github.com/aganovia/globe#readme",
   "dependencies": {
     "http-server": "^14.1.0",
-    "three": "^0.139.2",
-    "vite": "^2.9.5"
-  },
-  "devDependencies": {
-    "vite-plugin-string": "^1.1.2"
+    "three": "^0.139.2"
   }
 }

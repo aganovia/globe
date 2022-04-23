@@ -1,5 +1,6 @@
 import vertex from './shaders/vertex.js'
-import fragment from './shaders/fragment.js'
+import blueFragment from './shaders/blueFragment.js'
+import redFragment from './shaders/redFragment.js'
 
 // create new threejs scene
 const scene = new THREE.Scene();
@@ -39,9 +40,7 @@ var planetMaterials = {
   "earth": new THREE.MeshStandardMaterial({
     map: new THREE.TextureLoader().load("./textures/8081_earthmap4k.jpg"),
     bumpMap: new THREE.TextureLoader().load("./textures/8081_earthmap10k_grayscale.jpg"),
-    bumpScale: 2,
-    reflectivity: 1,
-    shininess: 100
+    bumpScale: 2
   }),
   "mars": new THREE.MeshStandardMaterial({
     map: new THREE.TextureLoader().load("./textures/8k_mars.jpg"),
@@ -61,8 +60,8 @@ var planetMaterials = {
     map: new THREE.TextureLoader().load("./textures/2k_neptune.jpg"),
   }),
   "mercury": new THREE.MeshStandardMaterial({
-    map: new THREE.TextureLoader().load("./textures/8k_mercury.jpg"),
-    bump: new THREE.TextureLoader().load("./textures/8k_mercury.jpg"),
+    map: new THREE.TextureLoader().load("./textures/mercury_texture_nasa.jpg"),
+    bumpMap: new THREE.TextureLoader().load("./textures/8k_mercury.jpg"),
     bumpScale: 2 
   }),
   "venus": new THREE.MeshStandardMaterial({
@@ -95,35 +94,42 @@ particlesMesh.position.y = 10;
 particlesMesh.position.z = 0;
 
 // create a sphere -> texture is earth by default
-var radius = 5;
+var sphereRadius = 5;
 const sphere = new THREE.Mesh(
-  new THREE.SphereGeometry(radius, 50, 30),
+  new THREE.SphereGeometry(sphereRadius, 50, 30),
   planetMaterials.earth
-
-  // if we wanted to use custom vertex / fragment shaders...
-
-  // new THREE.ShaderMaterial({
-  //   vertexShader: vertex,
-  //   fragmentShader: fragment,
-  //   uniforms: {
-  //     globeTexture: {
-  //       value: new THREE.TextureLoader().load('./textures/8081_earthmap10k.jpg')
-  //     }
-  //   }
-  // })
 );
+
+// create atmospheres
+const blueAtmosphere = new THREE.Mesh(
+  new THREE.SphereGeometry(sphereRadius, 50, 30),
+  new THREE.ShaderMaterial({
+    vertexShader: vertex,
+    fragmentShader: blueFragment,
+    blending: THREE.AdditiveBlending,
+    side: THREE.BackSide
+  })
+)
+
+const redAtmosphere = new THREE.Mesh(
+  new THREE.SphereGeometry(sphereRadius, 50, 30),
+  new THREE.ShaderMaterial({
+    vertexShader: vertex,
+    fragmentShader: redFragment,
+    blending: THREE.AdditiveBlending,
+    side: THREE.BackSide
+  })
+)
 
 // create moon for earth
 const moon = new THREE.Mesh(
-  new THREE.SphereGeometry(radius, 50, 30),
+  new THREE.SphereGeometry(sphereRadius, 50, 30),
   new THREE.MeshStandardMaterial({
     // color: colors.orange,
     map: new THREE.TextureLoader().load("./textures/moonbump4k.jpg"),
     bumpMap: new THREE.TextureLoader().load("./textures/moonmap4k.jpg"),
     emissive: colors.white,
-    emissiveIntensity: 0.25,
-    reflectivity: 1,
-    shininess: 100
+    emissiveIntensity: 0.25
   })
 );
 
@@ -143,6 +149,15 @@ const rings = new THREE.Mesh(
 scene.add(sphere);
 sphere.position.set(0, 10, 5);
 
+scene.add(blueAtmosphere);
+blueAtmosphere.position.set(0, 10, 5);
+blueAtmosphere.scale.set(1.25, 1.25, 1.25);
+
+scene.add(redAtmosphere);
+redAtmosphere.position.set(0, 10, 5);
+redAtmosphere.scale.set(1.25, 1.25, 1.25);
+redAtmosphere.visible = false;
+
 scene.add(moon);
 moon.scale.set(0.1, 0.1, 0.1);
 moon.position.set(-10, 10, 5);
@@ -153,7 +168,7 @@ rings.rotation.set(80, 0, -11);
 rings.visible = false;
 
 // spin controls
-var spinControl = new SpinControls(sphere, radius, camera, renderer.domElement);
+var spinControl = new SpinControls(sphere, sphereRadius, camera, renderer.domElement);
 spinControl.dampingFactor = 1.5;
 
 var cameraSpinControl = new CameraSpinControls(camera, renderer.domElement);
@@ -252,11 +267,6 @@ function onKeyDown(event) {
       currentPlanet = 0; // earth
     } else {
       currentPlanet = currentPlanet - 1;
-      if (currentPlanet == 3) { // saturn
-        rings.visible = true;
-      } else { 
-        rings.visible = false; 
-      }
     }
     sphere.material = planetMaterials[planets[currentPlanet]];
   } else if (event.keyCode == 68) { // cycle right
@@ -268,15 +278,28 @@ function onKeyDown(event) {
       currentPlanet = 1;
     } else {
       currentPlanet = currentPlanet + 1;
-      if (currentPlanet == 3) { // saturn
-        rings.visible = true;
-      } else { 
-        rings.visible = false; 
-      }
     }
-    sphere.material = planetMaterials[planets[currentPlanet]];
   }
-  
+    
+    if (currentPlanet == 0 || currentPlanet == 4 || currentPlanet == 5) {
+      blueAtmosphere.visible = true;
+    } else {
+      blueAtmosphere.visible = false;
+    }
+
+    if (currentPlanet == 1) {
+      redAtmosphere.visible = true;
+    } else {
+      redAtmosphere.visible = false;
+    }
+
+    if (currentPlanet == 3) { // saturn
+      rings.visible = true;
+    } else { 
+      rings.visible = false; 
+    }
+
+    sphere.material = planetMaterials[planets[currentPlanet]];
 }
 
 initLight();
