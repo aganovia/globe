@@ -1,6 +1,9 @@
+import * as THREE from 'three';
 import vertex from './shaders/vertex.js'
 import blueFragment from './shaders/blueFragment.js'
 import redFragment from './shaders/redFragment.js'
+import SpinControls from './scripts/SpinControls.js'
+import CameraSpinControls from './scripts/CameraSpinControls.js'
 
 // create new threejs scene
 const scene = new THREE.Scene();

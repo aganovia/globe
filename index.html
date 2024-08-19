@@ -2,19 +2,20 @@
 <html>
 <head>
     <title>Term Project</title>
-    <!-- <style>
-        body { margin: 0; }
-    </style> -->
     <link rel="stylesheet" href="./styles.css?v=1.0">
     <script src="./scripts/webgl-utils.js"></script>
     <script src="./scripts/initShaders.js"></script>
 </head>
 <body>
 <!-- Three.js library -->
-<script src="https://threejs.org/build/three.min.js"></script>
-<script src="scripts/SpinControls.js"></script>
-<script src="./js/controls/OrbitControls.js"></script>
-<script src="scripts/CameraSpinControls.js"></script>
+<script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@v0.167.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.167.1/examples/jsm/"
+      }
+    }
+</script>
 
 <!-- real stuff starts here -->
 <div class="ui">A and D keys to cycle between planets. Buttons for Lighting:</div>
