@@ -13,10 +13,13 @@ The primary technology utilized is [Three.js](https://threejs.org/), a popular J
 
 ## Run Instructions
 
-You can find the app at [this link](https://cis.gvsu.edu/~aganovia/cis367/project/) on my personal website or at [this link](https://aganovia.github.io/globe/) (GitHub Pages deployment).
+You can find a live Github Pages deployment of this app at [this link](https://aganovia.github.io/globe/).
 
 To run the app locally:
-1. Clone the repository
+1. Clone the repository:
+```bash
+git clone https://github.com/aganovia/globe.git
+```
 2. Run the following commands (with node installed):
 ```bash
    npm install
